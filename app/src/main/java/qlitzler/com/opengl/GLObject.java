@@ -2,54 +2,65 @@ package qlitzler.com.opengl;
 
 import android.opengl.GLES30;
 
+import java.nio.Buffer;
 import java.nio.ByteBuffer;
 import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
+import qlitzler.com.opengl.shader.Shader;
+
+
 /**
  * Created by qlitzler on 29/05/16.
  */
-public abstract class GLObject {
+public abstract class GLObject<T extends Shader> {
 
-	protected final int shader;
+	private static final int INT = 2;
+	private static final int FLOAT = 4;
 
-	public GLObject() {
-		shader = shader();
+	protected static final int XYZ = 3;
+	protected static final int RGBA = 4;
+
+	protected final T shader;
+
+	public GLObject(T shader) {
+		this.shader = shader;
 	}
 
-	protected abstract String getShaderVertex();
+	public abstract void draw(float[] mvp);
 
-	protected abstract String getShaderFragment();
-
-	private int shader() {
-		final int vertexShader = GLRendererMain.loadShader(GLES30.GL_VERTEX_SHADER, getShaderVertex());
-		final int fragmentShader = GLRendererMain.loadShader(GLES30.GL_FRAGMENT_SHADER, getShaderFragment());
-		final int shader = GLES30.glCreateProgram();
-
-		GLES30.glAttachShader(shader, vertexShader);
-		GLES30.glAttachShader(shader, fragmentShader);
-		GLES30.glLinkProgram(shader);
-		return shader;
-	}
-
-	protected FloatBuffer generateFloatBuffer(float[] buffer, int size) {
-		FloatBuffer floatBuffer = generateBuffer(size).asFloatBuffer();
+	protected FloatBuffer generateFloatBuffer(float[] buffer) {
+		FloatBuffer floatBuffer = generateBuffer(buffer.length * FLOAT).asFloatBuffer();
 		floatBuffer.put(buffer);
 		floatBuffer.position(0);
 		return floatBuffer;
 	}
 
-	protected ShortBuffer generateShortBuffer(short[] buffer, int size) {
-		ShortBuffer shortBuffer = generateBuffer(size).asShortBuffer();
+	protected ShortBuffer generateShortBuffer(short[] buffer) {
+		ShortBuffer shortBuffer = generateBuffer(buffer.length * INT).asShortBuffer();
 		shortBuffer.put(buffer);
 		shortBuffer.position(0);
 		return shortBuffer;
 	}
 
-	protected ByteBuffer generateBuffer(int size) {
+	private ByteBuffer generateBuffer(int size) {
 		ByteBuffer buffer = ByteBuffer.allocateDirect(size);
 		buffer.order(ByteOrder.nativeOrder());
 		return buffer;
+	}
+
+	protected void bindArrayBuffer(int buffer, int attribute, int size, Buffer data, int type) {
+		GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, buffer);
+		GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, data.capacity() * FLOAT, data, type);
+		GLES30.glEnableVertexAttribArray(attribute);
+		GLES30.glVertexAttribPointer(attribute, size, GLES30.GL_FLOAT, false, size * FLOAT, 0);
+		GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0);
+	}
+
+	protected void bindElementBuffer(int buffer, Buffer data, int type) {
+		GLES30.glBindBuffer(GLES30.GL_ELEMENT_ARRAY_BUFFER, buffer);
+		GLES30.glBufferData(GLES30.GL_ELEMENT_ARRAY_BUFFER, data.capacity() * INT, data, type);
+		GLES30.glBindBuffer(GLES30.GL_ELEMENT_ARRAY_BUFFER, 0);
 	}
 }
