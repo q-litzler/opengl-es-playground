@@ -1,4 +1,4 @@
-package qlitzler.com.opengl;
+package qlitzler.com.opengl.opengl;
 
 import android.opengl.GLES30;
 
@@ -19,25 +19,25 @@ public abstract class GLObject<T extends Shader> {
 	private static final int INT = 2;
 	private static final int FLOAT = 4;
 
-	protected static final int XYZ = 3;
-	protected static final int RGBA = 4;
+	static final int XYZ = 3;
+	static final int RGBA = 4;
 
-	protected final T shader;
+	final T shader;
 
-	public GLObject(T shader) {
+	GLObject(T shader) {
 		this.shader = shader;
 	}
 
 	public abstract void draw(float[] mvp);
 
-	protected FloatBuffer generateFloatBuffer(float[] buffer) {
+	FloatBuffer generateFloatBuffer(float[] buffer) {
 		FloatBuffer floatBuffer = generateBuffer(buffer.length * FLOAT).asFloatBuffer();
 		floatBuffer.put(buffer);
 		floatBuffer.position(0);
 		return floatBuffer;
 	}
 
-	protected ShortBuffer generateShortBuffer(short[] buffer) {
+	ShortBuffer generateShortBuffer(short[] buffer) {
 		ShortBuffer shortBuffer = generateBuffer(buffer.length * INT).asShortBuffer();
 		shortBuffer.put(buffer);
 		shortBuffer.position(0);
@@ -50,7 +50,7 @@ public abstract class GLObject<T extends Shader> {
 		return buffer;
 	}
 
-	protected void bindArrayBuffer(int buffer, int attribute, int size, Buffer data, int type) {
+	void bindArrayBuffer(int buffer, int attribute, int size, Buffer data, int type) {
 		GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, buffer);
 		GLES30.glBufferData(GLES30.GL_ARRAY_BUFFER, data.capacity() * FLOAT, data, type);
 		GLES30.glEnableVertexAttribArray(attribute);
@@ -58,7 +58,7 @@ public abstract class GLObject<T extends Shader> {
 		GLES30.glBindBuffer(GLES30.GL_ARRAY_BUFFER, 0);
 	}
 
-	protected void bindElementBuffer(int buffer, Buffer data, int type) {
+	void bindElementBuffer(int buffer, Buffer data, int type) {
 		GLES30.glBindBuffer(GLES30.GL_ELEMENT_ARRAY_BUFFER, buffer);
 		GLES30.glBufferData(GLES30.GL_ELEMENT_ARRAY_BUFFER, data.capacity() * INT, data, type);
 		GLES30.glBindBuffer(GLES30.GL_ELEMENT_ARRAY_BUFFER, 0);

@@ -6,7 +6,6 @@ import android.opengl.GLES30;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
-import qlitzler.com.opengl.GLObject;
 import qlitzler.com.opengl.shader.ShaderGrid;
 
 /**
@@ -30,7 +29,7 @@ public class Grid extends GLObject<ShaderGrid> {
 
 	private ConfigGrid configGrid;
 
-	public Grid(ShaderGrid shaderGrid, ConfigGrid configGrid, int instances) {
+	private Grid(ShaderGrid shaderGrid, ConfigGrid configGrid, int instances) {
 		super(shaderGrid);
 		this.configGrid = configGrid;
 		vao = new int[1];

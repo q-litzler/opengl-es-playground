@@ -17,7 +17,7 @@ import qlitzler.com.opengl.shader.ShaderGrid;
  */
 public class GLRendererMain implements GLSurfaceView.Renderer {
 
-	private Grid grid, grid1;
+	private Grid grid;
 
 	private final float[] matrixMvp = new float[16];
 	private final float[] matrixProjection = new float[16];
