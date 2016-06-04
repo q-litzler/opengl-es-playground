@@ -1,4 +1,4 @@
-package qlitzler.com.opengl.shader;
+package qlitzler.com.opengl.opengl.shader;
 
 import android.opengl.GLES20;
 import android.opengl.GLES30;

@@ -1,4 +1,4 @@
-package qlitzler.com.opengl.opengl;
+package qlitzler.com.opengl.opengl.object;
 
 /**
  * Created by qlitzler on 04/06/16.

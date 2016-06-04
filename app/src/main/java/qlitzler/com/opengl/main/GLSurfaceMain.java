@@ -1,4 +1,4 @@
-package qlitzler.com.opengl;
+package qlitzler.com.opengl.main;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;

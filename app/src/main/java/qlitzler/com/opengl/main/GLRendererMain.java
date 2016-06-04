@@ -1,4 +1,4 @@
-package qlitzler.com.opengl;
+package qlitzler.com.opengl.main;
 
 import android.opengl.GLES20;
 import android.opengl.GLES30;
@@ -8,9 +8,9 @@ import android.opengl.Matrix;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import qlitzler.com.opengl.opengl.ConfigGrid;
-import qlitzler.com.opengl.opengl.Grid;
-import qlitzler.com.opengl.shader.ShaderGrid;
+import qlitzler.com.opengl.opengl.object.ConfigGrid;
+import qlitzler.com.opengl.opengl.object.Grid;
+import qlitzler.com.opengl.opengl.shader.ShaderGrid;
 
 /**
  * Created by qlitzler on 29/05/16.

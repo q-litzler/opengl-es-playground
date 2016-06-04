@@ -1,9 +1,11 @@
-package qlitzler.com.opengl;
+package qlitzler.com.opengl.main;
 
 import android.opengl.GLSurfaceView;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
+
+import qlitzler.com.opengl.R;
 
 /**
  * Created by qlitzler on 29/05/16.

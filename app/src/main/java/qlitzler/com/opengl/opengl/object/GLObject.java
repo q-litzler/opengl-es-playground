@@ -1,4 +1,4 @@
-package qlitzler.com.opengl.opengl;
+package qlitzler.com.opengl.opengl.object;
 
 import android.opengl.GLES30;
 
@@ -8,7 +8,7 @@ import java.nio.ByteOrder;
 import java.nio.FloatBuffer;
 import java.nio.ShortBuffer;
 
-import qlitzler.com.opengl.shader.Shader;
+import qlitzler.com.opengl.opengl.shader.Shader;
 
 
 /**

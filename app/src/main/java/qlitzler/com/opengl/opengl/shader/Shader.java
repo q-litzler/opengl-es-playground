@@ -1,8 +1,8 @@
-package qlitzler.com.opengl.shader;
+package qlitzler.com.opengl.opengl.shader;
 
 import android.opengl.GLES30;
 
-import qlitzler.com.opengl.GLRendererMain;
+import qlitzler.com.opengl.main.GLRendererMain;
 
 /**
  * Created by qlitzler on 04/06/16.
