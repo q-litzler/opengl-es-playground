@@ -45,11 +45,11 @@ public class ColorUtils {
 			case 4:
 				return turquoise;
 			case 5:
-				return blue;
+				return orange;
 			case 's':
-				return yellow;
+				return red;
 			case 'e':
-				return yellow;
+				return green;
 		}
 		return 0;
 	}

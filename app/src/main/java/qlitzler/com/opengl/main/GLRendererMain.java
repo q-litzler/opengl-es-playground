@@ -41,6 +41,7 @@ public class GLRendererMain implements GLSurfaceView.Renderer {
 
 	public void onSurfaceChanged(GL10 unused, int width, int height) {
 		GLES30.glViewport(0, 0, width, height);
+		float ratio = width / (float) height;
 		Matrix.setIdentityM(matrixProjection, 0);
 		Matrix.orthoM(matrixProjection, 0, 0, width, height, 0, 1, -1);
 //		Matrix.setLookAtM(matrixView, 0, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f, 0f);

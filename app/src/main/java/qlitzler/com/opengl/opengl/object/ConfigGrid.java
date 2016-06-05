@@ -62,6 +62,17 @@ public class ConfigGrid {
 		for (int i = 0; i < total; ++i) {
 			final int index = i * RGBA;
 			final int color = AppOpenGL.getColorUtils().getColor(grid[i]);
+			final float black = i / (float)total;
+			final int gradient;
+
+			if (color == AppOpenGL.getColorUtils().yellow) {
+
+			}
+
+//			position[index] = black;
+//			position[index + 1] = black;
+//			position[index + 2] = black;
+//			position[index + 3] = 0.0f;
 
 			position[index] = Color.red(color) / 255.0f;
 			position[index + 1] = Color.green(color) / 255.0f;
