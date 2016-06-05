@@ -1,9 +1,10 @@
 package qlitzler.com.opengl.main;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.opengl.GLSurfaceView;
 import android.util.DisplayMetrics;
+import android.view.MotionEvent;
+import android.view.View;
 
 import qlitzler.com.opengl.AppOpenGL;
 import qlitzler.com.opengl.opengl.object.ConfigGrid;
@@ -11,7 +12,7 @@ import qlitzler.com.opengl.opengl.object.ConfigGrid;
 /**
  * Created by qlitzler on 29/05/16.
  */
-class GLSurfaceMain extends GLSurfaceView {
+class GLSurfaceMain extends GLSurfaceView implements View.OnTouchListener {
 
 	public GLSurfaceMain(Context context) {
 		super(context);
@@ -22,10 +23,7 @@ class GLSurfaceMain extends GLSurfaceView {
 
 		boolean isPerfectSquare = Math.sqrt(total) % 1 == 0;
 
-		System.out.println(Color.blue(AppOpenGL.getColorUtils().blue));
-		System.out.println(Color.green(AppOpenGL.getColorUtils().blue));
-		System.out.println(Color.red(AppOpenGL.getColorUtils().blue));
-
+		setOnTouchListener(this);
 		setEGLContextClientVersion(3);
 		setRenderer(
 			new GLRendererMain(
@@ -38,5 +36,10 @@ class GLSurfaceMain extends GLSurfaceView {
 			)
 		);
 		setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
+	}
+
+	@Override
+	public boolean onTouch(View v, MotionEvent event) {
+		return false;
 	}
 }
