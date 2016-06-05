@@ -30,9 +30,9 @@ public class ConfigGrid {
 
 	public static float[] vertices(float x, float y) {
 		return new float[]{
-			-x, y,
-			-x, -y,
-			x, -y,
+			0, y,
+			0, 0,
+			x, 0,
 			x, y,
 		};
 	}
@@ -51,16 +51,16 @@ public class ConfigGrid {
 
 	public static float[] instances(float x, float y, int row, int total) {
 		float[] position = new float[total * XY];
-		int indexX = 1;
-		int indexY = 1;
+		int indexX = 0;
+		int indexY = 0;
 
 		for (int i = 0; i < total; ++i) {
 			if (i != 0 && i % row == 0) {
-				indexX = 1;
+				indexX = 0;
 				++indexY;
 			}
-			position[i * XY] = 0;
-			position[i * XY + 1] = 0;
+			position[i * XY] = x * indexX;
+			position[i * XY + 1] = y * indexY ;
 			++indexX;
 		}
 		return position;

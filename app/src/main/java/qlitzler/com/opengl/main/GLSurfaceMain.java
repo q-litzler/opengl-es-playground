@@ -21,7 +21,7 @@ class GLSurfaceMain extends GLSurfaceView {
 
 		System.out.println(width + " " + height);
 
-		int grid = 4;
+		int grid = 100;
 		double square = Math.sqrt(grid);
 
 		boolean isPerfectSquare = square % 1 == 0;
@@ -30,8 +30,8 @@ class GLSurfaceMain extends GLSurfaceView {
 
 		System.out.println(row + " " + isPerfectSquare);
 
-		float squareWidth = width / (float) grid;
-		float squareHeight = height / (float) grid;
+		float squareWidth = width / (float) row;
+		float squareHeight = height / (float) row;
 
 		System.out.println(squareWidth + " " + squareHeight);
 

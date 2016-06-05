@@ -30,7 +30,7 @@ public class ShaderGrid extends Shader {
 			"in vec4 v_color;" +
 			"out vec4 f_color;" +
 			"void main() {" +
-			"	gl_Position = matrix_mvp * vec4(v_position + v_position + v_instance, 0.0, 1.0);" +
+			"	gl_Position = matrix_mvp * vec4(v_position + v_instance, 0.0, 1.0);" +
 			"	f_color = v_color;" +
 			"}";
 	}
