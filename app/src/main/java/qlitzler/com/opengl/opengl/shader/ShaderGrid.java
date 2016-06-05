@@ -25,12 +25,12 @@ public class ShaderGrid extends Shader {
 	protected String getShaderVertex() {
 		return " #version 300 es\n" +
 			"uniform mat4 matrix_mvp;" +
-			"in vec4 v_position;" +
+			"in vec2 v_position;" +
+			"in vec2 v_instance;" +
 			"in vec4 v_color;" +
-			"in vec4 v_instance;" +
 			"out vec4 f_color;" +
 			"void main() {" +
-			"	gl_Position = matrix_mvp * (v_position + v_instance);" +
+			"	gl_Position = matrix_mvp * vec4(v_position + v_position + v_instance, 0.0, 1.0);" +
 			"	f_color = v_color;" +
 			"}";
 	}

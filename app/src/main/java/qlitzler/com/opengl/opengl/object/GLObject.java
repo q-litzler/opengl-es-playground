@@ -19,7 +19,7 @@ public abstract class GLObject<T extends Shader> {
 	private static final int INT = 2;
 	private static final int FLOAT = 4;
 
-	static final int XYZ = 3;
+	static final int XY = 2;
 	static final int RGBA = 4;
 
 	final T shader;
