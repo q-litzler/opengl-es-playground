@@ -1,6 +1,7 @@
 package qlitzler.com.opengl.main;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.opengl.GLSurfaceView;
 import android.util.DisplayMetrics;
 
@@ -16,27 +17,26 @@ class GLSurfaceMain extends GLSurfaceView {
 		super(context);
 
 		DisplayMetrics displayMetrics = AppOpenGL.getDisplayMetrics();
-		final int width = displayMetrics.widthPixels;
-		final int height = displayMetrics.heightPixels;
 
-		System.out.println(width + " " + height);
+		int total = AppOpenGL.map.length;
 
-		int grid = 100;
-		double square = Math.sqrt(grid);
+		boolean isPerfectSquare = Math.sqrt(total) % 1 == 0;
 
-		boolean isPerfectSquare = square % 1 == 0;
-
-		final int row = (int) square;
-
-		System.out.println(row + " " + isPerfectSquare);
-
-		float squareWidth = width / (float) row;
-		float squareHeight = height / (float) row;
-
-		System.out.println(squareWidth + " " + squareHeight);
+		System.out.println(Color.blue(AppOpenGL.getColorUtils().blue));
+		System.out.println(Color.green(AppOpenGL.getColorUtils().blue));
+		System.out.println(Color.red(AppOpenGL.getColorUtils().blue));
 
 		setEGLContextClientVersion(3);
-		setRenderer(new GLRendererMain(ConfigGrid.vertices(squareWidth, squareHeight), ConfigGrid.colors(grid), ConfigGrid.instances(squareWidth, squareHeight, row, grid), grid));
+		setRenderer(
+			new GLRendererMain(
+				ConfigGrid.newInstance(
+					AppOpenGL.map,
+					total,
+					displayMetrics.widthPixels,
+					displayMetrics.heightPixels
+				)
+			)
+		);
 		setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
 	}
 }

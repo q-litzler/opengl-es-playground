@@ -31,4 +31,26 @@ public class ColorUtils {
 		green = ContextCompat.getColor(context, R.color.green);
 		blue = ContextCompat.getColor(context, R.color.blue);
 	}
+
+	public int getColor(byte code) {
+		switch (code) {
+			case 0:
+				return blue;
+			case 1:
+				return yellow;
+			case 2:
+				return pink;
+			case 3:
+				return purple;
+			case 4:
+				return turquoise;
+			case 5:
+				return blue;
+			case 's':
+				return yellow;
+			case 'e':
+				return yellow;
+		}
+		return 0;
+	}
 }

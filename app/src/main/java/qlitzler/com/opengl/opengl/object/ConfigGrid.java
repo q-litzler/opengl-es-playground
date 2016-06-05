@@ -1,5 +1,9 @@
 package qlitzler.com.opengl.opengl.object;
 
+import android.graphics.Color;
+
+import qlitzler.com.opengl.AppOpenGL;
+
 import static qlitzler.com.opengl.opengl.object.GLObject.RGBA;
 import static qlitzler.com.opengl.opengl.object.GLObject.XY;
 
@@ -9,6 +13,7 @@ import static qlitzler.com.opengl.opengl.object.GLObject.XY;
 
 public class ConfigGrid {
 
+	final byte[] grid;
 	final float[] vertices;
 	final float[] colors;
 	final float[] instances;
@@ -16,11 +21,23 @@ public class ConfigGrid {
 
 	public final int instance;
 
-	public static ConfigGrid newInstance(float[] vertices, float[] colors, float[] instances, int instance) {
-		return new ConfigGrid(vertices, colors, instances, ConfigGrid.ELEMENTS, instance);
+	public static ConfigGrid newInstance(byte[] grid, int total, int width, int height) {
+		final int row = (int) Math.sqrt(total);
+		float x = width / (float) row;
+		float y = height / (float) row;
+
+		return new ConfigGrid(
+			grid,
+			ConfigGrid.vertices(x, y),
+			ConfigGrid.colors(total, grid),
+			ELEMENTS,
+			ConfigGrid.instances(x, y, row, total),
+			total
+		);
 	}
 
-	private ConfigGrid(float[] vertices, final float[] colors, final float[] instances, final short[] indices, int instance) {
+	private ConfigGrid(byte[] grid, float[] vertices, final float[] colors, final short[] indices, final float[] instances, int instance) {
+		this.grid = grid;
 		this.vertices = vertices;
 		this.instances = instances;
 		this.colors = colors;
@@ -37,14 +54,19 @@ public class ConfigGrid {
 		};
 	}
 
-	public static float[] colors(int total) {
+	private static final short ELEMENTS[] = {0, 1, 2, 0, 2, 3};
+
+	public static float[] colors(int total, byte[] grid) {
 		float[] position = new float[total * RGBA];
 
 		for (int i = 0; i < total; ++i) {
-			position[i * RGBA] = i / (float)total;
-			position[i * RGBA + 1] = i / (float)total;
-			position[i * RGBA + 2] = i / (float)total;
-			position[i * RGBA + 3] = 0.0f;
+			final int index = i * RGBA;
+			final int color = AppOpenGL.getColorUtils().getColor(grid[i]);
+
+			position[index] = Color.red(color) / 255.0f;
+			position[index + 1] = Color.green(color) / 255.0f;
+			position[index + 2] = Color.blue(color) / 255.0f;
+			position[index + 3] = 0.0f;
 		}
 		return position;
 	}
@@ -59,27 +81,12 @@ public class ConfigGrid {
 				indexX = 0;
 				++indexY;
 			}
-			position[i * XY] = x * indexX;
-			position[i * XY + 1] = y * indexY ;
+			final int index = i * XY;
+
+			position[index] = x * indexX;
+			position[index + 1] = y * indexY;
 			++indexX;
 		}
 		return position;
 	}
-
-//	private static final float COORDS1[] = {
-//		-0.2f, 0.2f, 0.0f,
-//		-0.2f, -0.2f, 0.0f,
-//		0.2f, -0.2f, 0.0f,
-//		0.2f, 0.2f, 0.0f,
-//	};
-
-
-//	private static final float[] BLACK = {
-//		0.0f, 0.0f, 0.5f, 0.0f,
-//		0.5f, 0.0f, 0.0f, 0.0f,
-//		0.0f, 0.5f, 0.0f, 0.0f,
-//		0.5f, 0.5f, 0.5f, 0.0f,
-//	};
-
-	private static final short ELEMENTS[] = {0, 1, 2, 0, 2, 3};
 }

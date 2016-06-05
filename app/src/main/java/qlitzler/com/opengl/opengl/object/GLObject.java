@@ -22,7 +22,7 @@ public abstract class GLObject<T extends Shader> {
 	static final int XY = 2;
 	static final int RGBA = 4;
 
-	final T shader;
+	final protected T shader;
 
 	GLObject(T shader) {
 		this.shader = shader;

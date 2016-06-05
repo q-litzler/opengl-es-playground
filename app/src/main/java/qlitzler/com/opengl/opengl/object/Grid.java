@@ -21,13 +21,9 @@ public class Grid extends GLObject<ShaderGrid> {
 	private static final int EBO = 2;
 	private static final int IBO = 3;
 
-	public static Grid newInstance(ShaderGrid shader, ConfigGrid config) {
-		return new Grid(shader, config);
-	}
-
 	private ConfigGrid configGrid;
 
-	private Grid(ShaderGrid shaderGrid, ConfigGrid configGrid) {
+	public Grid(ShaderGrid shaderGrid, ConfigGrid configGrid) {
 		super(shaderGrid);
 		this.configGrid = configGrid;
 		vao = new int[1];

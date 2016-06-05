@@ -17,26 +17,21 @@ import qlitzler.com.opengl.opengl.shader.ShaderGrid;
  */
 public class GLRendererMain implements GLSurfaceView.Renderer {
 
-	private Grid grid;
-
 	private final float[] matrixMvp = new float[16];
 	private final float[] matrixProjection = new float[16];
 	private final float[] matrixView = new float[16];
 
-	private final float[] square, position, colors;
-	private final int instance;
+	private ConfigGrid configGrid;
+	private Grid grid;
 
-	public GLRendererMain(float[] square, float[] position, float[] colors, int instance) {
-		this.square = square;
-		this.position = position;
-		this.colors = colors;
-		this.instance = instance;
+	public GLRendererMain(ConfigGrid configGrid) {
+		this.configGrid = configGrid;
 	}
 
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		GLES30.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-		grid = Grid.newInstance(new ShaderGrid(), ConfigGrid.newInstance(square, position, colors, instance));
+		grid = new Grid(new ShaderGrid(), configGrid);
 	}
 
 	public void onDrawFrame(GL10 unused) {
