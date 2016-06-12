@@ -1,6 +1,5 @@
 package qlitzler.com.opengl.main;
 
-import android.opengl.GLES20;
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
 import android.opengl.Matrix;
@@ -17,9 +16,7 @@ import qlitzler.com.opengl.opengl.shader.ShaderGrid;
  */
 public class GLRendererMain implements GLSurfaceView.Renderer {
 
-	private final float[] matrixMvp = new float[16];
 	private final float[] matrixProjection = new float[16];
-	private final float[] matrixView = new float[16];
 
 	private ConfigGrid configGrid;
 	private Grid grid;
@@ -35,17 +32,14 @@ public class GLRendererMain implements GLSurfaceView.Renderer {
 	}
 
 	public void onDrawFrame(GL10 unused) {
-		GLES30.glClear(GLES20.GL_COLOR_BUFFER_BIT);
+		GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
 		grid.draw(matrixProjection);
 	}
 
 	public void onSurfaceChanged(GL10 unused, int width, int height) {
 		GLES30.glViewport(0, 0, width, height);
-		float ratio = width / (float) height;
 		Matrix.setIdentityM(matrixProjection, 0);
 		Matrix.orthoM(matrixProjection, 0, 0, width, height, 0, 1, -1);
-//		Matrix.setLookAtM(matrixView, 0, 0f, 0f, 1f, 0f, 0f, 0f, 0f, 1f, 0f);
-//		Matrix.multiplyMM(matrixMvp, 0, matrixProjection, 0, matrixView, 0);
 	}
 
 	public static int loadShader(int type, String shaderCode) {
@@ -55,4 +49,17 @@ public class GLRendererMain implements GLSurfaceView.Renderer {
 		GLES30.glCompileShader(shader);
 		return shader;
 	}
+
+//	public void zoom(float factor, float step, float way) {
+//		Matrix.setIdentityM(matrixScale, 0);
+//
+//		Matrix.scaleM(matrixScale, 0, factor, factor, 1.0f);
+//
+//		float width = (configGrid.squareWidth * 3f / step) * way;
+//		float height = (configGrid.squareHeight * 7f / step) * way;
+//		Matrix.translateM(matrixTranslate, 0, width, height, 0f);
+//
+//		Matrix.multiplyMM(matrixScale, 0, matrixScale, 0, matrixTranslate, 0);
+//		Matrix.multiplyMM(matrixCurrent, 0, matrixMvp, 0, matrixScale, 0);
+//	}
 }

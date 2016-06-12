@@ -13,36 +13,39 @@ import static qlitzler.com.opengl.opengl.object.GLObject.XY;
 
 public class ConfigGrid {
 
-	final byte[] grid;
-	final float[] vertices;
-	final float[] colors;
-	final float[] instances;
-	final short[] indices;
-
+	public final byte[] grid;
+	public final float[] vertices;
+	public final float[] colors;
+	public final float[] instances;
+	public final short[] indices;
+	public final float squareWidth;
+	public final float squareHeight;
+	public final int row;
 	public final int instance;
 
-	public static ConfigGrid newInstance(byte[] grid, int total, int width, int height) {
-		final int row = (int) Math.sqrt(total);
-		float x = width / (float) row;
-		float y = height / (float) row;
+	public static ConfigGrid newInstance(byte[] grid, int instance, int width, int height) {
+		final int row = (int) Math.sqrt(instance);
 
 		return new ConfigGrid(
+			instance,
+			row,
+			width / (float) row,
+			height / (float) row,
 			grid,
-			ConfigGrid.vertices(x, y),
-			ConfigGrid.colors(total, grid),
-			ELEMENTS,
-			ConfigGrid.instances(x, y, row, total),
-			total
+			ELEMENTS
 		);
 	}
 
-	private ConfigGrid(byte[] grid, float[] vertices, final float[] colors, final short[] indices, final float[] instances, int instance) {
-		this.grid = grid;
-		this.vertices = vertices;
-		this.instances = instances;
-		this.colors = colors;
-		this.indices = indices;
+	private ConfigGrid(int instance, int row, float squareWidth, float squareHeight, byte[] grid, final short[] indices) {
 		this.instance = instance;
+		this.row = row;
+		this.squareWidth = squareWidth;
+		this.squareHeight = squareHeight;
+		this.grid = grid;
+		this.indices = indices;
+		this.vertices = ConfigGrid.vertices(squareWidth, squareHeight);
+		this.instances = ConfigGrid.instances(squareWidth, squareHeight, row, instance);
+		this.colors = ConfigGrid.colors(instance, grid);
 	}
 
 	public static float[] vertices(float x, float y) {
@@ -62,12 +65,7 @@ public class ConfigGrid {
 		for (int i = 0; i < total; ++i) {
 			final int index = i * RGBA;
 			final int color = AppOpenGL.getColorUtils().getColor(grid[i]);
-			final float black = i / (float)total;
-			final int gradient;
-
-			if (color == AppOpenGL.getColorUtils().yellow) {
-
-			}
+			final float black = i / (float) total;
 
 //			position[index] = black;
 //			position[index + 1] = black;

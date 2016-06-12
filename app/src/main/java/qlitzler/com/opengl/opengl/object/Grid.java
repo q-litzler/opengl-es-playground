@@ -1,6 +1,5 @@
 package qlitzler.com.opengl.opengl.object;
 
-import android.opengl.GLES20;
 import android.opengl.GLES30;
 
 import java.nio.FloatBuffer;
@@ -53,7 +52,7 @@ public class Grid extends GLObject<ShaderGrid> {
 	@Override
 	public void draw(float[] mvp) {
 		GLES30.glUseProgram(shader.program);
-		GLES20.glUniformMatrix4fv(shader.mvp, 1, false, mvp, 0);
+		GLES30.glUniformMatrix4fv(shader.mvp, 1, false, mvp, 0);
 		GLES30.glBindVertexArray(vao[0]);
 		GLES30.glBindBuffer(GLES30.GL_ELEMENT_ARRAY_BUFFER, buffers[EBO]);
 		GLES30.glDrawElementsInstanced(GLES30.GL_TRIANGLE_STRIP, configGrid.indices.length, GLES30.GL_UNSIGNED_SHORT, 0, configGrid.instance);

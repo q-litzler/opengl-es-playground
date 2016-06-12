@@ -1,6 +1,5 @@
 package qlitzler.com.opengl.opengl.shader;
 
-import android.opengl.GLES20;
 import android.opengl.GLES30;
 
 /**
@@ -18,7 +17,7 @@ public class ShaderGrid extends Shader {
 		position = GLES30.glGetAttribLocation(program, "v_position");
 		color = GLES30.glGetAttribLocation(program, "v_color");
 		instance = GLES30.glGetAttribLocation(program, "v_instance");
-		mvp = GLES20.glGetUniformLocation(program, "matrix_mvp");
+		mvp = GLES30.glGetUniformLocation(program, "matrix_mvp");
 	}
 
 	@Override
