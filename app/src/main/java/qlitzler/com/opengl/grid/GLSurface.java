@@ -1,23 +1,30 @@
-package qlitzler.com.opengl.main;
+package qlitzler.com.opengl.grid;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 
-import qlitzler.com.opengl.opengl.object.ConfigGrid;
+import qlitzler.com.opengl.opengl.object.Grid;
 
 /**
  * Created by qlitzler on 29/05/16.
  */
-class GLSurfaceMain extends GLSurfaceView {
+class GLSurface extends GLSurfaceView {
 
-	public GLSurfaceMain(Context context, ConfigGrid configGrid) {
+	private Grid grid;
+
+	public GLSurface(Context context, Grid grid) {
 		super(context);
+		this.grid = grid;
 		setEGLContextClientVersion(3);
-		setRenderer(new GLRendererMain(configGrid));
+		setRenderer(new GLRenderer(grid));
 		setRenderMode(RENDERMODE_WHEN_DIRTY);
 	}
 
-//	int step = 100;
+	public Grid getGrid() {
+		return grid;
+	}
+
+	//	int step = 100;
 //	float zoom = 10f;
 //
 //	if (val) {

@@ -1,4 +1,4 @@
-package qlitzler.com.opengl.main;
+package qlitzler.com.opengl.grid;
 
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;
@@ -7,33 +7,33 @@ import android.opengl.Matrix;
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
 
-import qlitzler.com.opengl.opengl.object.ConfigGrid;
 import qlitzler.com.opengl.opengl.object.Grid;
+import qlitzler.com.opengl.opengl.object.GLGrid;
 import qlitzler.com.opengl.opengl.shader.ShaderGrid;
 
 /**
  * Created by qlitzler on 29/05/16.
  */
-public class GLRendererMain implements GLSurfaceView.Renderer {
+public class GLRenderer implements GLSurfaceView.Renderer {
 
 	private final float[] matrixProjection = new float[16];
 
-	private ConfigGrid configGrid;
 	private Grid grid;
+	private GLGrid GLGrid;
 
-	public GLRendererMain(ConfigGrid configGrid) {
-		this.configGrid = configGrid;
+	public GLRenderer(Grid grid) {
+		this.grid = grid;
 	}
 
 	@Override
 	public void onSurfaceCreated(GL10 gl, EGLConfig config) {
 		GLES30.glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-		grid = new Grid(new ShaderGrid(), configGrid);
+		GLGrid = new GLGrid(new ShaderGrid(), grid);
 	}
 
 	public void onDrawFrame(GL10 unused) {
 		GLES30.glClear(GLES30.GL_COLOR_BUFFER_BIT);
-		grid.draw(matrixProjection);
+		GLGrid.draw(matrixProjection);
 	}
 
 	public void onSurfaceChanged(GL10 unused, int width, int height) {
@@ -55,8 +55,8 @@ public class GLRendererMain implements GLSurfaceView.Renderer {
 //
 //		Matrix.scaleM(matrixScale, 0, factor, factor, 1.0f);
 //
-//		float width = (configGrid.squareWidth * 3f / step) * way;
-//		float height = (configGrid.squareHeight * 7f / step) * way;
+//		float width = (grid.squareWidth * 3f / step) * way;
+//		float height = (grid.squareHeight * 7f / step) * way;
 //		Matrix.translateM(matrixTranslate, 0, width, height, 0f);
 //
 //		Matrix.multiplyMM(matrixScale, 0, matrixScale, 0, matrixTranslate, 0);
