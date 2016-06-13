@@ -8,11 +8,11 @@ public class Fling {
 
 	public final String axis;
 	public final int value;
-	public final int position;
+	public final int direction;
 
-	public Fling(String axis, int value, int position) {
+	public Fling(String axis, int value, int direction) {
 		this.axis = axis;
 		this.value = value;
-		this.position = position;
+		this.direction = direction;
 	}
 }

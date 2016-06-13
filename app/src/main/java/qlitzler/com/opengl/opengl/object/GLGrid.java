@@ -24,7 +24,7 @@ public class GLGrid extends GLObject<ShaderGrid> {
 
 	private Grid grid;
 
-	public GLGrid(ShaderGrid shaderGrid, Grid grid) {
+	GLGrid(ShaderGrid shaderGrid, Grid grid) {
 		super(shaderGrid);
 		this.grid = grid;
 		vao = new int[1];
@@ -73,9 +73,9 @@ public class GLGrid extends GLObject<ShaderGrid> {
 		};
 	}
 
-	private static final short ELEMENTS[] = {0, 1, 2, 0, 2, 3};
+	private final short ELEMENTS[] = {0, 1, 2, 0, 2, 3};
 
-	public static float[] colors(Grid grid) {
+	private float[] colors(Grid grid) {
 		float[] position = new float[grid.map.size * RGBA];
 
 		for (int i = 0; i < grid.map.size; ++i) {
@@ -90,7 +90,7 @@ public class GLGrid extends GLObject<ShaderGrid> {
 		return position;
 	}
 
-	public static float[] instances(Grid grid) {
+	private float[] instances(Grid grid) {
 		float[] position = new float[grid.map.size * XY];
 		int indexX = 0;
 		int indexY = 0;

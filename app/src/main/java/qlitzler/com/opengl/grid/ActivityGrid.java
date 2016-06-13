@@ -21,6 +21,8 @@ import qlitzler.com.opengl.opengl.object.Grid;
  */
 public class ActivityGrid extends AppCompatActivity implements View.OnTouchListener {
 
+	public static final String POSITION = "position";
+
 	private ViewGroup main;
 	private GLSurface surface;
 	private View view;
@@ -37,6 +39,19 @@ public class ActivityGrid extends AppCompatActivity implements View.OnTouchListe
 		main = (ViewGroup) findViewById(android.R.id.content);
 		view = newSquare((int) grid.squareWidth, (int) grid.squareHeight);
 		surface.setOnTouchListener(this);
+
+//		Intent intent = getIntent();
+//
+//		if (intent != null && intent.hasExtra(POSITION)) {
+//			int position = intent.getIntExtra(POSITION, 0);
+//			int color = colorUtils.getColor(grid.map.bytes[position]);
+//
+//			main.addView(view);
+//			view.setX(grid.getX(position));
+//			view.setY(grid.getY(position));
+//			view.setBackgroundColor(colorUtils.red);
+//			view.requestLayout();
+//		}
 	}
 
 	@Override
@@ -53,7 +68,7 @@ public class ActivityGrid extends AppCompatActivity implements View.OnTouchListe
 			view.setY(grid.getY(position));
 			view.setBackgroundColor(color);
 			view.requestLayout();
-			ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, view, "item");
+			ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, view, getString(R.string.transition));
 			Intent intent = new Intent(this, ActivityTile.class);
 			intent.putExtra(ActivityTile.POSITION, position);
 			startActivity(intent, options.toBundle());

@@ -26,17 +26,22 @@ import rx.subjects.PublishSubject;
 
 public class ActivityTile extends AppCompatActivity {
 
-	public static final String POSITION = "position";
+	public static final String POSITION = "direction";
 
 	private static final ColorUtils colorUtils = AppOpenGL.getColorUtils();
 
 	private static final int SWIPE_DURATION = 300;
+	private static final int LEFT = 0;
+	private static final int TOP = 1;
+	private static final int RIGHT = 2;
+	private static final int BOTTOM = 3;
 
 	private View viewStart;
 	private FrameLayout viewEnd;
 	private GestureDetectorCompat gesture;
 	private PublishSubject<Fling> publishFling;
 	private int position;
+	private int startColor;
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,15 +50,17 @@ public class ActivityTile extends AppCompatActivity {
 
 		viewStart = findViewById(R.id.start);
 		viewEnd = (FrameLayout) findViewById(R.id.end);
+		viewEnd.setBackgroundColor(colorUtils.blue);
 
 		position = getIntent().getIntExtra(POSITION, 0);
-		viewStart.setBackgroundColor(colorUtils.getColor(AppOpenGL.getMap().bytes[position]));
-
+		startColor = colorUtils.getColor(AppOpenGL.getMap().bytes[position]);
+		gesture = new GestureDetectorCompat(this, new FlingListener());
 		publishFling = PublishSubject.create();
+
 		publishFling
 			.throttleFirst(SWIPE_DURATION, TimeUnit.MILLISECONDS)
-			.subscribe(this::animate);
-		gesture = new GestureDetectorCompat(this, new FlingListener());
+			.subscribe(this::move);
+		viewStart.setBackgroundColor(colorUtils.getColor(AppOpenGL.getMap().bytes[position]));
 	}
 
 	@Override
@@ -62,31 +69,52 @@ public class ActivityTile extends AppCompatActivity {
 		return super.onTouchEvent(event);
 	}
 
-	private void animate(Fling fling) {
+	private void move(Fling fling) {
+		int newPosition = getNewPosition(position, fling.direction, AppOpenGL.getMap().row);
+		animate(fling, newPosition);
+	}
+
+	private void animate(Fling fling, int newPosition) {
 		int colorBegin = colorUtils.getColor(AppOpenGL.getMap().bytes[position]);
-		int colorEnd = colorUtils.getColor(AppOpenGL.getMap().bytes[fling.position]);
+		int colorEnd = colorUtils.getColor(AppOpenGL.getMap().bytes[newPosition]);
 		viewEnd.setBackgroundColor(colorEnd);
-		position = fling.position;
+		position = newPosition;
 
 		ObjectAnimator flingAnimator = ObjectAnimator.ofFloat(viewStart, fling.axis, fling.value);
 		AnimatorSet flingSet = new AnimatorSet();
 		flingSet.setInterpolator(new AccelerateDecelerateInterpolator());
 		flingSet.setDuration(SWIPE_DURATION);
 		flingSet.play(flingAnimator);
-		flingSet.addListener(new SwipAnimationListener(fling.axis, colorBegin, colorEnd));
+		flingSet.addListener(new SwipAnimationListener(fling, newPosition, colorBegin, colorEnd));
 		flingSet.start();
 	}
 
-	public class SwipAnimationListener implements Animator.AnimatorListener {
+	private int getNewPosition(int position, int direction, int row) {
+		switch (direction) {
+			case LEFT:
+				return position - 1;
+			case RIGHT:
+				return position + 1;
+			case TOP:
+				return position - row;
+			case BOTTOM:
+				return position + row;
+		}
+		return -1;
+	}
 
-		final String axis;
+	private class SwipAnimationListener implements Animator.AnimatorListener {
+
+		final Fling fling;
 		final int colorBegin;
 		final int colorEnd;
+		final int newPosition;
 
-		public SwipAnimationListener(String axis, int colorBegin, int colorEnd) {
-			this.axis = axis;
+		private SwipAnimationListener(Fling fling, int newPosition, int colorBegin, int colorEnd) {
+			this.fling = fling;
 			this.colorBegin = colorBegin;
 			this.colorEnd = colorEnd;
+			this.newPosition = newPosition;
 		}
 
 		@Override
@@ -96,13 +124,27 @@ public class ActivityTile extends AppCompatActivity {
 
 		@Override
 		public void onAnimationEnd(Animator animation) {
-			ObjectAnimator reverseAnimator = ObjectAnimator.ofFloat(viewStart, axis, 0);
+			ObjectAnimator reverseAnimator = ObjectAnimator.ofFloat(viewStart, fling.axis, 0);
 			AnimatorSet reverseSet = new AnimatorSet();
 			viewStart.setBackgroundColor(colorEnd);
 			viewEnd.setBackgroundColor(colorBegin);
 			reverseAnimator.setDuration(0);
 			reverseSet.play(reverseAnimator);
 			reverseSet.start();
+
+			if ((position % AppOpenGL.getMap().row == 0 && fling.direction == LEFT)
+				|| (position % AppOpenGL.getMap().row == AppOpenGL.getMap().row - 1 && fling.direction == RIGHT)
+				|| (position < AppOpenGL.getMap().row && fling.direction == TOP)
+				|| (position >= AppOpenGL.getMap().size - AppOpenGL.getMap().row && fling.direction == BOTTOM)
+				|| AppOpenGL.getMap().bytes[newPosition] == 0) {
+				viewStart.setBackgroundColor(startColor);
+				finishAfterTransition();
+
+//				ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(ActivityTile.this, viewStart, getString(R.string.transition));
+//				Intent intent = new Intent(ActivityTile.this, ActivityGrid.class);
+//				intent.putExtra(ActivityGrid.POSITION, position);
+//				startActivity(intent, options.toBundle());
+			}
 		}
 
 		@Override
@@ -116,7 +158,7 @@ public class ActivityTile extends AppCompatActivity {
 		}
 	}
 
-	public class FlingListener extends GestureDetector.SimpleOnGestureListener {
+	private class FlingListener extends GestureDetector.SimpleOnGestureListener {
 
 		private static final String X = "x";
 		private static final String Y = "y";
@@ -129,19 +171,23 @@ public class ActivityTile extends AppCompatActivity {
 
 			if (Math.abs(deltaX) < Math.abs(deltaY)) {
 				if (deltaY < 0) { // Top to bottom
-					fling = new Fling(Y, viewStart.getHeight(), position - 10);
+					fling = new Fling(Y, viewStart.getHeight(), TOP);
 				} else { // Bottom to top
-					fling = new Fling(Y, -viewStart.getHeight(), position + 10);
+					fling = new Fling(Y, -viewStart.getHeight(), BOTTOM);
 				}
 			} else {
 				if (deltaX < 0) { // Left to Right
-					fling = new Fling(X, viewStart.getWidth(), position - 1);
+					fling = new Fling(X, viewStart.getWidth(), LEFT);
 				} else { // Right to left
-					fling = new Fling(X, -viewStart.getWidth(), position + 1);
+					fling = new Fling(X, -viewStart.getWidth(), RIGHT);
 				}
 			}
 			publishFling.onNext(fling);
 			return true;
 		}
+	}
+
+	@Override
+	public void onBackPressed() {
 	}
 }
