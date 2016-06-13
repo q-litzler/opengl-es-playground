@@ -1,7 +1,9 @@
 package qlitzler.com.opengl.grid;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.DisplayMetrics;
 import android.view.MotionEvent;
@@ -9,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import qlitzler.com.opengl.AppOpenGL;
+import qlitzler.com.opengl.ColorUtils;
 import qlitzler.com.opengl.R;
 import qlitzler.com.opengl.opengl.object.Grid;
 
@@ -20,6 +23,7 @@ public class ActivityGrid extends AppCompatActivity implements View.OnTouchListe
 	private ViewGroup main;
 	private GLSurface surface;
 	private View view;
+	private ColorUtils colorUtils = AppOpenGL.getColorUtils();
 
 	@Override
 	protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -45,12 +49,18 @@ public class ActivityGrid extends AppCompatActivity implements View.OnTouchListe
 		}
 		Grid grid = surface.getGrid();
 		int position = grid.getPosition(event.getX(), event.getY());
-		int color = AppOpenGL.getColorUtils().getColor(grid.grid[position]);
+		int color = colorUtils.getColor(grid.grid[position]);
 
-		view.setX(grid.getX(position));
-		view.setY(grid.getY(position));
-		view.setBackgroundColor(color);
-		view.requestLayout();
+		if (color != colorUtils.blue) {
+			view.setX(grid.getX(position));
+			view.setY(grid.getY(position));
+			view.setBackgroundColor(color);
+			view.requestLayout();
+			ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(this, view, "item");
+			Intent intent = new Intent(this, ActivityTile.class);
+			intent.putExtra(ActivityTile.POSITION, position);
+			startActivity(intent, options.toBundle());
+		}
 		return false;
 	}
 

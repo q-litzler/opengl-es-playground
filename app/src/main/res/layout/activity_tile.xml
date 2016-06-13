@@ -1,16 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout
-    android:id="@+id/under"
+    android:id="@+id/end"
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:tag="red"
-    android:background="@color/red"
-    android:transitionName="item">
+    android:transitionName="@string/transition">
 
     <View
-        android:id="@+id/over"
-        android:tag="blue"
+        android:id="@+id/start"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>
 
