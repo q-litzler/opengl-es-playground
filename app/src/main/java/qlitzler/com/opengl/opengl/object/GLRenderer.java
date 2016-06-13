@@ -1,4 +1,4 @@
-package qlitzler.com.opengl.grid;
+package qlitzler.com.opengl.opengl.object;
 
 import android.opengl.GLES30;
 import android.opengl.GLSurfaceView;

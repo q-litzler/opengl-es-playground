@@ -1,14 +1,12 @@
-package qlitzler.com.opengl.grid;
+package qlitzler.com.opengl.opengl.object;
 
 import android.content.Context;
 import android.opengl.GLSurfaceView;
 
-import qlitzler.com.opengl.opengl.object.Grid;
-
 /**
  * Created by qlitzler on 29/05/16.
  */
-class GLSurface extends GLSurfaceView {
+public class GLSurface extends GLSurfaceView {
 
 	private Grid grid;
 

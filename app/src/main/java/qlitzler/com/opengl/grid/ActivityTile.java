@@ -47,7 +47,7 @@ public class ActivityTile extends AppCompatActivity {
 		viewEnd = (FrameLayout) findViewById(R.id.end);
 
 		position = getIntent().getIntExtra(POSITION, 0);
-		viewStart.setBackgroundColor(colorUtils.getColor(AppOpenGL.map[position]));
+		viewStart.setBackgroundColor(colorUtils.getColor(AppOpenGL.getMap().bytes[position]));
 
 		publishFling = PublishSubject.create();
 		publishFling
@@ -63,8 +63,8 @@ public class ActivityTile extends AppCompatActivity {
 	}
 
 	private void animate(Fling fling) {
-		int colorBegin = colorUtils.getColor(AppOpenGL.map[position]);
-		int colorEnd = colorUtils.getColor(AppOpenGL.map[fling.position]);
+		int colorBegin = colorUtils.getColor(AppOpenGL.getMap().bytes[position]);
+		int colorEnd = colorUtils.getColor(AppOpenGL.getMap().bytes[fling.position]);
 		viewEnd.setBackgroundColor(colorEnd);
 		position = fling.position;
 

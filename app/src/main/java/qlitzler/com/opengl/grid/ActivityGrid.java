@@ -13,6 +13,7 @@ import android.view.ViewGroup;
 import qlitzler.com.opengl.AppOpenGL;
 import qlitzler.com.opengl.ColorUtils;
 import qlitzler.com.opengl.R;
+import qlitzler.com.opengl.opengl.object.GLSurface;
 import qlitzler.com.opengl.opengl.object.Grid;
 
 /**
@@ -30,11 +31,7 @@ public class ActivityGrid extends AppCompatActivity implements View.OnTouchListe
 		super.onCreate(savedInstanceState);
 		DisplayMetrics screen = AppOpenGL.getDisplayMetrics();
 
-		final int size = AppOpenGL.map.length;
-
-		boolean isPerfectSquare = Math.sqrt(size) % 1 == 0;
-
-		Grid grid = Grid.newInstance(AppOpenGL.map, size, screen.widthPixels, screen.heightPixels);
+		Grid grid = Grid.newInstance(AppOpenGL.getMap(), screen.widthPixels, screen.heightPixels);
 		surface = new GLSurface(getBaseContext(), grid);
 		setContentView(surface);
 		main = (ViewGroup) findViewById(android.R.id.content);
@@ -49,7 +46,7 @@ public class ActivityGrid extends AppCompatActivity implements View.OnTouchListe
 		}
 		Grid grid = surface.getGrid();
 		int position = grid.getPosition(event.getX(), event.getY());
-		int color = colorUtils.getColor(grid.grid[position]);
+		int color = colorUtils.getColor(grid.map.bytes[position]);
 
 		if (color != colorUtils.blue) {
 			view.setX(grid.getX(position));
